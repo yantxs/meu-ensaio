@@ -21,9 +21,9 @@ function View() {
     this.replayLoop = "loopReset"
     this.enableLoop = "loopOnOff";
     this.tracks = "tracks"; // List of tracks and mute buttons
-    this.console = "messages";
-    this.consoleTab = "consoleTab";
-    this.waveTab = "waveTab";
+    // this.console = "messages"; // Console removed
+    // this.consoleTab = "consoleTab"; // Console removed
+    // this.waveTab = "waveTab"; // Wave tab removed
 
     // getting all the html elements when the page completly loads
     this.init = function () {
@@ -36,8 +36,8 @@ function View() {
         this.frontCanvas.height = window.View.masterCanvas.height;
         this.frontCanvas.width = window.View.masterCanvas.width;
 
-        this.waveCanvas = document.getElementById(this.waveCanvas);
-        this.waveCanvasContext = this.waveCanvas.getContext('2d');
+        // this.waveCanvas = document.getElementById(this.waveCanvas); // Wave canvas removed
+        // this.waveCanvasContext = this.waveCanvas.getContext('2d'); // Wave canvas removed
         this.songs = document.getElementById(this.songs);
         this.knobMasterVolume = document.getElementById(this.knobMasterVolume);
         this.mute = document.getElementById(this.mute);
@@ -49,9 +49,9 @@ function View() {
         this.replayLoop = document.getElementById(this.replayLoop);
         this.enableLoop = document.getElementById(this.enableLoop);
         this.tracks = document.getElementById(this.tracks);
-        this.console = document.getElementById(this.console);
-        this.consoleTab = document.getElementById(this.consoleTab);
-        this.waveTab = document.getElementById(this.waveTab);
+        // this.console = document.getElementById(this.console); // Console removed
+        // this.consoleTab = document.getElementById(this.consoleTab); // Console removed
+        // this.waveTab = document.getElementById(this.waveTab); // Wave tab removed
     }
 
     // print the controls of a song's track (name,mute,solo and progress bar)
@@ -68,16 +68,16 @@ function View() {
         this.tracks.appendChild(tr);
     }
 
-    // adding a message in the console
+    // adding a message in the console - Console removed, now logs to browser console
     this.addMessage = function (message) {
-        this.console.innerHTML = this.console.innerHTML + "<br />" + message;
+        console.log(message);
     }
 
     this.activeConsoleTab = function () {
-        $(this.consoleTab).click();
+        // Console removed - function now does nothing
     }
 
     this.activeWaveTab = function () {
-        $(this.waveTab).click();
+        // Wave tab removed - function now does nothing
     }
 }

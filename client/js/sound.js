@@ -8,7 +8,7 @@ var currentSong;
 // The audio context
 var context;
 
-var buttonPlay, buttonStop, buttonPause, buttonRecordMix;
+var buttonPlay, buttonStop, buttonPause;
 // List of tracks and mute buttons
 var divTrack;
 //The div where we display messages
@@ -56,10 +56,9 @@ function init() {
     buttonPlay = document.querySelector("#bplay");
     buttonPause = document.querySelector("#bpause");
     buttonStop = document.querySelector("#bstop");
-    buttonRecordMix = document.querySelector("#brecordMix");
 
     divTrack = document.getElementById("tracks");
-    divConsole = document.querySelector("#messages");
+    // divConsole = document.querySelector("#messages"); // Console removed
 
 
     // The waveform drawer
@@ -93,16 +92,12 @@ function init() {
 }
 
 function log(message) {
-    // Be sure that the console is visible
-    View.activeConsoleTab();
-    $('#messages').append(message + "<br/>");
-    $('#messages').animate({
-        scrollTop: $('#messages').prop("scrollHeight")
-    }, 500);
+    // Console removed - log to browser console instead
+    console.log(message);
 }
 
 function clearLog() {
-    $('#messages').empty();
+    // Console removed - function now does nothing
 }
 
 function existsSelection() {
@@ -214,7 +209,6 @@ function resetAllBeforeLoadingANewSong() {
     divTrack.innerHTML = "";
 
 
-    buttonRecordMix.disabled = true;
 }
 
 var bufferLoader;
@@ -237,7 +231,7 @@ function drawTrack(decodedBuffer, trackNumber) {
     var trackName = currentSong.tracks[trackNumber].name;
     //trackName = trackName.slice(trackName.lastIndexOf("/")+1, trackName.length-4);
 
-    waveformDrawer.init(decodedBuffer, View.masterCanvas, '#83E83E');
+    waveformDrawer.init(decodedBuffer, View.masterCanvas, '#85929e');
     var x = 0;
     var y = trackNumber * SAMPLE_HEIGHT;
     // First parameter = Y position (top left corner)
@@ -259,7 +253,6 @@ function finishedLoading(bufferList) {
     currentSong.setDecodedAudioBuffers(bufferList);
 
     buttonPlay.disabled = false;
-    buttonRecordMix.disabled = false;
 
     //enabling the loop buttons
     $('#loopBox > button').each(function (key, item) {
@@ -314,7 +307,7 @@ function loadSongList() {
         if (songList[0]) {
             $("<option />", {
                 value: "nochoice",
-                text: "Choose a song..."
+                text: "Escolha a canção..."
             }).appendTo(s);
         }
 
@@ -505,15 +498,12 @@ function showWelcomeMessage() {
     View.frontCanvasContext.save();
     View.frontCanvasContext.font = '14pt Arial';
     View.frontCanvasContext.fillStyle = 'white';
-    View.frontCanvasContext.fillText('Welcome to MT5, start by choosing a song ', 50, 200);
-    View.frontCanvasContext.fillText('in this drop down menu! ', 50, 220);
-    View.frontCanvasContext.fillText('Documentation and HowTo in the ', 315, 100);
-    View.frontCanvasContext.fillText('first link of the Help tab there! ', 315, 120);
+    View.frontCanvasContext.fillText('Comece escolhendo uma canção ', 50, 200);
+    View.frontCanvasContext.fillText('através deste menu! ', 50, 220);
 
     // Draws an arrow in direction of the drop down menu
     // x1, y1, x2, y2, width of arrow, color
     drawArrow(View.frontCanvasContext, 180, 170, 10, 10, 10, 'lightGreen');
-    drawArrow(View.frontCanvasContext, 450, 80, 450, 10, 10, 'lightGreen');
 
     View.frontCanvasContext.restore();
 }
@@ -531,60 +521,8 @@ function drawSelection() {
 
 
 function drawFrequencies() {
-    View.waveCanvasContext.save();
-    //View.waveCanvasContext.clearRect(0, 0, View.waveCanvas.width, View.waveCanvas.height);
-    View.waveCanvasContext.fillStyle = "rgba(0, 0, 0, 0.05)";
-    View.waveCanvasContext.fillRect(0, 0, View.waveCanvas.width, View.waveCanvas.height);
-
-    var freqByteData = new Uint8Array(currentSong.analyserNode.frequencyBinCount);
-    currentSong.analyserNode.getByteFrequencyData(freqByteData);
-    var nbFreq = freqByteData.length;
-
-    var SPACER_WIDTH = 5;
-    var BAR_WIDTH = 2;
-    var OFFSET = 100;
-    var CUTOFF = 23;
-    var HALF_HEIGHT = View.waveCanvas.height / 2;
-    var numBars = 1.7 * Math.round(View.waveCanvas.width / SPACER_WIDTH);
-
-    View.waveCanvasContext.lineCap = 'round';
-
-    for (var i = 0; i < numBars; ++i) {
-        var magnitude = 0.3 * freqByteData[Math.round((i * nbFreq) / numBars)];
-
-        View.waveCanvasContext.fillStyle = "hsl( " + Math.round((i * 360) / numBars) + ", 100%, 50%)";
-        View.waveCanvasContext.fillRect(i * SPACER_WIDTH, HALF_HEIGHT, BAR_WIDTH, -magnitude);
-        View.waveCanvasContext.fillRect(i * SPACER_WIDTH, HALF_HEIGHT, BAR_WIDTH, magnitude);
-
-    }
-
-    // Draw animated white lines top
-    View.waveCanvasContext.strokeStyle = "white";
-    View.waveCanvasContext.beginPath();
-
-    for (var i = 0; i < numBars; ++i) {
-        var magnitude = 0.3 * freqByteData[Math.round((i * nbFreq) / numBars)];
-        if (i > 0) {
-            //console.log("line lineTo "  + i*SPACER_WIDTH + ", " + -magnitude);
-            View.waveCanvasContext.lineTo(i * SPACER_WIDTH, HALF_HEIGHT - magnitude);
-        } else {
-            //console.log("line moveto "  + i*SPACER_WIDTH + ", " + -magnitude);
-            View.waveCanvasContext.moveTo(i * SPACER_WIDTH, HALF_HEIGHT - magnitude);
-        }
-    }
-    for (var i = 0; i < numBars; ++i) {
-        var magnitude = 0.3 * freqByteData[Math.round((i * nbFreq) / numBars)];
-        if (i > 0) {
-            //console.log("line lineTo "  + i*SPACER_WIDTH + ", " + -magnitude);
-            View.waveCanvasContext.lineTo(i * SPACER_WIDTH, HALF_HEIGHT + magnitude);
-        } else {
-            //console.log("line moveto "  + i*SPACER_WIDTH + ", " + -magnitude);
-            View.waveCanvasContext.moveTo(i * SPACER_WIDTH, HALF_HEIGHT + magnitude);
-        }
-    }
-    View.waveCanvasContext.stroke();
-
-    View.waveCanvasContext.restore();
+    // Wave canvas removed - function disabled
+    return;
 }
 
 function drawSampleImage(imageURL, trackNumber, trackName) {
@@ -649,7 +587,7 @@ function playAllTracks(startTime) {
     // goes forward, it's a high precision timer
     lastTime = context.currentTime;
 
-    View.activeWaveTab();
+    // View.activeWaveTab(); // Wave tab removed
 }
 
 function setVolumeOfTrackDependingOnSliderValue(nbTrack) {
@@ -784,7 +722,6 @@ function masterMuteUnmute(btn) {
 
 function toggleRecordMix() {
     currentSong.toggRecordMixMode();
-    $("#brecordMix").toggleClass("activated");
 
     clearLog();
     log("Record mix mode : " + currentSong.recordMixMode);
