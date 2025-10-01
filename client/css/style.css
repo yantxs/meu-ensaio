@@ -1,12 +1,15 @@
 body {
-    margin: 0 3%;
+    margin: 0;
     background: black;
+    overflow-x: auto;
 }
 
 #app {
-    width: 980px;
+    width: 100%;
+    max-width: 980px;
     margin: auto;
     background: #EEE;
+    min-width: 320px;
 }
 
 #console {
@@ -14,7 +17,7 @@ body {
     top: 0;
     height: 200px;
     width: 302px;
-    margin-left: 680px;
+    right: 0;
     text-align: center;
     color: white;
     background: black;
@@ -40,7 +43,8 @@ body {
     position: fixed;
     top: 0;
     height: 200px;
-    width: 680px;
+    width: calc(100% - 302px);
+    max-width: 680px;
     text-align: center;
     background: #EEE;
     border: 1px solid grey;
@@ -82,7 +86,8 @@ body {
 #scroll {
     position: absolute;
     top: 200px;
-    width: 980px;
+    width: 100%;
+    max-width: 980px;
     background: #EEE;
 }
 
@@ -97,6 +102,7 @@ body {
     border-radius: 0;
     height: 34px;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 .styled-select {
@@ -118,7 +124,9 @@ button {
     margin-top: 28px;
 }
 
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+.nav-tabs>.active>a,
+.nav-tabs>.active>a:hover,
+.nav-tabs>.active>a:focus {
     color: #000;
     cursor: default;
     background: #EEE;
@@ -174,11 +182,11 @@ body {
 .custom {
     width: 60%;
     -webkit-appearance: none !important;
+    appearance: none !important;
     height: 15px;
     border-radius: 8px;
-    -webkit-appearance: none !important;
-    border-radius: 5px;
     -webkit-box-shadow: inset 0 0 5px #333;
+    box-shadow: inset 0 0 5px #333;
     background-image: linear-gradient(to right, lightGreen, blue 100%, orange);
     transition: background 450ms;
 }
@@ -187,6 +195,7 @@ body {
 
 .custom::-webkit-slider-thumb {
     -webkit-appearance: none !important;
+    appearance: none !important;
     background: #AAA;
     background-image: linear-gradient(to bottom, #EEE, #AAA);
     border: 1px solid #999;
@@ -214,4 +223,411 @@ output {
     width: 100px;
     height: 40px;
     font-size: 2em;
+}
+
+/* RESPONSIVIDADE */
+
+/* Esconder botão de foco em desktop */
+@media screen and (min-width: 769px) {
+    #toggleUIBtn {
+        display: none !important;
+    }
+}
+
+/* Tablets e telas médias */
+@media screen and (max-width: 980px) {
+    #app {
+        width: 100vw;
+        max-width: 100%;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    #masterTools {
+        width: 60%;
+        min-width: 400px;
+    }
+
+    #console {
+        width: 40%;
+        min-width: 280px;
+    }
+
+    #canvass {
+        margin-left: 250px;
+    }
+
+    #trackControl {
+        width: 248px;
+    }
+
+    #myCanvas {
+        width: calc(100vw - 250px);
+        max-width: 500px;
+    }
+
+    #frontCanvas {
+        width: calc(100vw - 250px);
+        max-width: 500px;
+    }
+}
+
+/* Dispositivos móveis - layout empilhado vertical */
+@media screen and (max-width: 768px) {
+    body {
+        margin: 0;
+        padding: 0;
+        touch-action: manipulation;
+        font-size: 14px;
+    }
+
+    #app {
+        width: 100vw;
+        max-width: 100%;
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Cabeçalho com controles principais */
+    #masterTools {
+        position: static;
+        width: 100%;
+        height: auto;
+        min-height: 120px;
+        padding: 10px;
+        box-sizing: border-box;
+        border: none;
+        border-bottom: 1px solid grey;
+        background: #EEE;
+        z-index: auto;
+    }
+
+    #masterTools>div {
+        width: 100% !important;
+        position: static !important;
+        max-width: none !important;
+    }
+
+    #masterTools h2 {
+        margin: 0 0 8px 0;
+        font-size: 1.3em;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Volume e botão mute */
+    #volume {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 8px 0;
+        height: auto;
+    }
+
+    .masterVolume {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    #bsound {
+        position: static !important;
+        margin: 0 !important;
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    /* Botões de controle centralizados */
+    #masterTools table {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    #masterTools table td {
+        text-align: center;
+        padding: 5px 0;
+    }
+
+    #masterTools table button {
+        width: 42px;
+        height: 42px;
+        margin: 0 3px;
+    }
+
+    /* Seletor de música */
+    .styled-select {
+        width: 90%;
+        max-width: 280px;
+        margin: 8px auto;
+        display: block;
+    }
+
+    .styled-select select {
+        width: 100%;
+        font-size: 15px;
+        padding: 8px 12px;
+    }
+
+    /* Área principal com tracks */
+    #scroll {
+        position: static;
+        width: 100%;
+        background: #EEE;
+        top: auto;
+        padding: 15px 10px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    #trackControl {
+        width: 100%;
+        float: none;
+        max-height: 35vh;
+        overflow-y: auto;
+        border-bottom: 1px solid grey;
+        padding: 10px;
+        background: #EEE;
+    }
+
+    #tracks {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Cards para cada track */
+    .trackBox {
+        display: block !important;
+        padding: 15px !important;
+        border: 1px solid #ccc !important;
+        background: #f8f8f8;
+        margin-bottom: 8px !important;
+        border-radius: 8px;
+    }
+
+    .trackBox td {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    /* Nome do instrumento */
+    .trackBox td:first-child {
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 16px;
+        text-align: left;
+        color: #333;
+    }
+
+    /* Controles de cada track */
+    .trackBox div {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        gap: 10px;
+        padding: 8px;
+        background: #fff;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    /* Progress bar */
+    .pisteProgress {
+        transform: none !important;
+        width: 100% !important;
+        height: 8px !important;
+        margin: 10px 0 !important;
+        order: 3;
+    }
+
+    /* Botões dos tracks */
+    .trackBox button {
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        min-height: 42px !important;
+        margin: 0 2px !important;
+    }
+
+    /* Volume slider */
+    .volumeSlider {
+        flex: 1;
+        max-width: 150px;
+        margin: 0 10px;
+    }
+
+    /* Console embaixo */
+    #console {
+        position: static;
+        width: 100%;
+        height: auto;
+        min-height: 80px;
+        margin: 0;
+        border: none;
+        border-top: 1px solid grey;
+        background: black;
+    }
+
+    /* Canvas área com scroll horizontal */
+    #canvass {
+        width: 100%;
+        margin: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        background: #000;
+        min-height: 300px;
+        flex: 1;
+        padding: 15px 0;
+    }
+
+    #myCanvas,
+    #frontCanvas {
+        width: 602px;
+        min-width: 602px;
+        height: auto;
+        display: block;
+    }
+
+    /* Ajustes gerais para botões e controles */
+    button {
+        touch-action: manipulation;
+    }
+
+    /* Tab especial para o botão de foco - fundo vermelho */
+    .focus-tab {
+        flex: 1 !important;
+        text-align: center !important;
+        background: #dc3545 !important;
+        /* Vermelho para chamar atenção */
+        border-radius: 4px 4px 0 0 !important;
+        transition: background-color 0.3s ease;
+    }
+
+    .focus-tab:hover {
+        background: #c82333 !important;
+        /* Vermelho mais escuro no hover */
+    }
+
+    /* Botão de toggle UI ocupando todo o li */
+    #toggleUIBtn {
+        width: 100% !important;
+        height: 100% !important;
+        background: transparent !important;
+        color: white !important;
+        border: none !important;
+        padding: 8px 12px !important;
+        border-radius: 0 !important;
+        font-size: 14px !important;
+        cursor: pointer !important;
+        font-weight: bold !important;
+        transition: all 0.3s ease;
+        margin: 0 !important;
+        box-shadow: none !important;
+        display: block !important;
+    }
+
+    #toggleUIBtn:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        transform: none;
+    }
+
+    #toggleUIBtn:active {
+        background: rgba(255, 255, 255, 0.2) !important;
+        transform: none;
+    }
+
+    /* Modo foco - classe adicionada via JavaScript */
+    .focus-mode #scroll {
+        position: static !important;
+        width: 100% !important;
+        height: calc(100vh - 60px) !important;
+        padding: 10px !important;
+        box-sizing: border-box;
+        background: #EEE !important;
+    }
+
+    .focus-mode #trackControl {
+        max-height: 55vh !important;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .focus-mode #canvass {
+        min-height: 35vh !important;
+        border-radius: 8px;
+        margin-top: 5px;
+        flex: 1;
+    }
+
+    /* Tabs do console */
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav-tabs li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .nav-tabs a {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
+
+/* Dispositivos muito pequenos */
+@media screen and (max-width: 480px) {
+    #masterTools h2 {
+        font-size: 1.2em;
+    }
+
+    .volumeSlider {
+        width: 100px;
+    }
+
+    .styled-select {
+        width: 160px;
+    }
+
+    .styled-select select {
+        width: 160px;
+        font-size: 14px;
+    }
+
+    button {
+        min-height: 40px;
+        min-width: 40px;
+        height: 40px;
+        width: 40px;
+    }
+
+    .trackBox {
+        font-size: 14px;
+    }
+}
+
+/* Melhorias para touch */
+@media (hover: none) and (pointer: coarse) {
+    button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .custom::-webkit-slider-thumb {
+        height: 35px;
+        width: 35px;
+        border-radius: 17px;
+    }
+
+    .custom::-moz-range-thumb {
+        height: 35px;
+        width: 35px;
+        border-radius: 17px;
+    }
 }

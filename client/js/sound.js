@@ -47,6 +47,28 @@ window.requestAnimFrame = (function () {
         };
 })();
 
+var uiVisible = true;
+function toggleUI() {
+    uiVisible = !uiVisible;
+    var masterTools = document.getElementById('masterTools');
+    var tabContent = document.querySelector('.tab-content');
+    var toggleText = document.getElementById('toggleUIText');
+    var app = document.getElementById('app');
+
+    if (uiVisible) {
+        // Mostrar UI normal
+        masterTools.style.display = 'block';
+        if (tabContent) tabContent.style.display = 'block';
+        app.classList.remove('focus-mode');
+        toggleText.innerHTML = '📱 Foco';
+    } else {
+        // Ativar modo foco - oculta masterTools e tab-content
+        masterTools.style.display = 'none';
+        if (tabContent) tabContent.style.display = 'none';
+        app.classList.add('focus-mode');
+        toggleText.innerHTML = '⬅️ Voltar';
+    }
+}
 
 function init() {
 
@@ -182,13 +204,13 @@ function initAudioContext() {
 
     var ctx = new audioContext();
 
-    if(ctx === undefined) {
+    if (ctx === undefined) {
         throw new Error('AudioContext is not supported. :(');
     }
 
     return ctx;
 }
-    // SOUNDS AUDIO ETC.
+// SOUNDS AUDIO ETC.
 
 
 function resetAllBeforeLoadingANewSong() {
@@ -312,7 +334,7 @@ function loadSongList() {
         }
 
         songList.forEach(function (songName) {
-            console.log(songName);
+            console.log("Adding song:", songName);
 
             $("<option />", {
                 value: songName,
